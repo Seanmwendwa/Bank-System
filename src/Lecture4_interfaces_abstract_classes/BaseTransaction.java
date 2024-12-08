@@ -1,7 +1,6 @@
 package Lecture4_interfaces_abstract_classes;
 
 import org.jetbrains.annotations.NotNull;
-
 import java.util.Calendar;
 
 public abstract class BaseTransaction implements TransactionInterface {
@@ -10,42 +9,36 @@ public abstract class BaseTransaction implements TransactionInterface {
     private final String transactionID;
 
     /**
-     * Lecture1_adt.TransactionInterface Constructor
-     * @param amount in an integer
-     * @param date: Not null, and must be a Calendar object
-     * @return void
-     * Instialises the field, attributes of a transaction
-     * Creates a object of this
+     * Constructor for BaseTransaction class
+     * @param amount The transaction amount, must be positive.
+     * @param date The date of the transaction, must not be null and must be a valid Calendar object.
      */
-    public BaseTransaction(int amount, @NotNull Calendar date)  {
+    public BaseTransaction(int amount, @NotNull Calendar date) {
         this.amount = amount;
-        this.date = (Calendar) date.clone();
-        int uniq = (int) Math.random()*10000;
-        transactionID = date.toString()+uniq;
+        this.date = (Calendar) date.clone();  // Defensive copying to avoid external modification
+        int uniq = (int) (Math.random() * 10000);  // Generate a unique ID
+        this.transactionID = date.toString() + uniq;
     }
 
-    /**
-     * getAmount()
-     * @return integer
-     */
+    // Getters
     public double getAmount() {
-        return amount; // Because we are dealing with Value types we need not worry about what we return
+        return amount;
     }
 
-    /**
-     * getDate()
-     * @return Calendar Object
-     */
     public Calendar getDate() {
-//        return date;    // Because we are dealing with Reference types we need to judiciously copy what our getters return
-        return (Calendar) date.clone(); // Defensive copying or Judicious Copying
+        return (Calendar) date.clone();  // Defensive copying
     }
 
-    // Method to get a unique identifier for the transaction
-    public String getTransactionID(){
-        return  transactionID;
+    public String getTransactionID() {
+        return transactionID;
     }
-    // Method to print a transaction receipt or details
+
+    // Abstract methods to be implemented by subclasses
     public abstract void printTransactionDetails();
     public abstract void apply(BankAccount ba);
+
+    // Specifications
+    // Precondition: amount must be positive and date must be a valid Calendar object.
+    // Postcondition: A valid transaction is created with a unique transaction ID.
+    // Invariant: Amount must always be positive; transaction ID must be unique.
 }
