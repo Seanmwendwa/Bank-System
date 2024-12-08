@@ -1,44 +1,65 @@
 package Lecture4_interfaces_abstract_classes;
 
 import org.jetbrains.annotations.NotNull;
+
 import java.util.Calendar;
 
-public abstract class BaseTransaction implements TransactionInterface {
+public class BaseTransaction implements TransactionInterface {
     private final int amount;
     private final Calendar date;
     private final String transactionID;
 
     /**
-     * Constructor for BaseTransaction class
-     * @param amount The transaction amount, must be positive.
-     * @param date The date of the transaction, must not be null and must be a valid Calendar object.
+     * Constructor for BaseTransaction
+     * @param amount in an integer
+     * @param date: Not null, and must be a Calendar object
      */
-    public BaseTransaction(int amount, @NotNull Calendar date) {
+    public BaseTransaction(int amount, @NotNull Calendar date)  {
         this.amount = amount;
-        this.date = (Calendar) date.clone();  // Defensive copying to avoid external modification
-        int uniq = (int) (Math.random() * 10000);  // Generate a unique ID
-        this.transactionID = date.toString() + uniq;
+        this.date = (Calendar) date.clone();
+        int uniq = (int) (Math.random() * 10000);
+        transactionID = date.toString() + uniq;
     }
 
-    // Getters
+    /**
+     * Get the amount of the transaction
+     * @return the amount
+     */
     public double getAmount() {
         return amount;
     }
 
+    /**
+     * Get the date of the transaction
+     * @return a cloned Calendar object representing the transaction date
+     */
     public Calendar getDate() {
-        return (Calendar) date.clone();  // Defensive copying
+        return (Calendar) date.clone(); // Defensive copying to preserve the original date
     }
 
-    public String getTransactionID() {
+    /**
+     * Get the unique transaction ID
+     * @return the transaction ID
+     */
+    public String getTransactionID(){
         return transactionID;
     }
 
-    // Abstract methods to be implemented by subclasses
-    public abstract void printTransactionDetails();
-    public abstract void apply(BankAccount ba);
+    /**
+     * Print the transaction details (implemented here as a simple print)
+     */
+    public void printTransactionDetails() {
+        System.out.println("Transaction ID: " + getTransactionID());
+        System.out.println("Amount: " + getAmount());
+        System.out.println("Date: " + getDate().getTime());
+    }
 
-    // Specifications
-    // Precondition: amount must be positive and date must be a valid Calendar object.
-    // Postcondition: A valid transaction is created with a unique transaction ID.
-    // Invariant: Amount must always be positive; transaction ID must be unique.
+    /**
+     * Apply this transaction to the bank account
+     * @param ba the bank account to apply the transaction to
+     */
+    public void apply(BankAccount ba) {
+        // In a concrete class, we might apply the transaction to the bank account here
+        // Example: update the balance based on the transaction type (deposit/withdrawal)
+    }
 }
